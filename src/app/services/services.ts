@@ -1,0 +1,1 @@
+export * from './gqlService/gql-service.service';
