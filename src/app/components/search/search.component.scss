@@ -1,0 +1,12 @@
+.search-form {
+    margin-left: 15px;
+    width: 96%;
+
+    .mat-input-container {
+        display: block;
+    }
+
+    .mat-chip.mat-chip-selected:not {
+        background-color: blue;
+    }
+}

@@ -1,3 +1,18 @@
-<p>
-  search works!
-</p>
+<form class="search-form" container='containerX'>
+  <md-input-container fxLayout='row'>
+    <input mdInput placeholder="Search">
+  </md-input-container>
+
+  <md-chip-list fxLayout='row' fxLayoutAlign='space-around stretch'>
+    Languages:
+    <md-chip *ngFor="let language of languages"
+        class='chip'
+        selected="false"
+        color="secondary"
+        (click)='selectLanguage($event, language.name)'>
+      {{ language.name }} ({{ language.count }}) {{ language.selected }} 
+    </md-chip>
+  </md-chip-list>
+</form>
+<hr>
+

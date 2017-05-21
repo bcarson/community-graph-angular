@@ -1,3 +1,7 @@
-<p>
-  dashboard works!
-</p>
+<div *ngIf='loading'>
+  <md-progress-spinner></md-progress-spinner>
+</div>
+<div *ngIf='!loading'>{{ filters?.language }}
+  <search [languages]='languageFilter' (selected)='updateFilter($event)'></search>
+  <results-list [list]='repositories' [filters]='filters'></results-list>
+</div>
