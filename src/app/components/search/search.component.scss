@@ -6,7 +6,8 @@
         display: block;
     }
 
-    .mat-chip.mat-chip-selected:not {
+    .active {
+        color: white;
         background-color: blue;
     }
 }

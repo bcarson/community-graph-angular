@@ -17,7 +17,7 @@ import {
 
 import { GqlService } from './services/services';
 
-import { FilterPipe, OrderByPipe } from './shared/shared';
+import { FilterPipe, OrderByPipe, SubstringPipe, } from './shared/shared';
 
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import { ApolloModule } from 'apollo-angular';
@@ -37,7 +37,8 @@ export function provideClient(): ApolloClient {
     AppComponent,
     DashboardComponent,
     FilterPipe, 
-    OrderByPipe,
+    OrderByPipe, 
+    SubstringPipe,
     ResultsListComponent,
     ResultsDetailComponent,
     SearchComponent

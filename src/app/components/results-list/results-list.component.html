@@ -2,7 +2,8 @@
   <md-list>
   <h3 md-subheader>Repositories</h3>
     <md-list-item *ngIf='filters?.language'>Filtered by Language: {{ filters.language }}</md-list-item>
-    <md-list-item *ngFor="let item of list | filter: filters?.language">
+    <md-list-item *ngIf='filters?.search'>Filtered by String: {{ filters.search }}</md-list-item>
+    <md-list-item *ngFor="let item of filteredList">
       <md-icon md-list-icon>folder</md-icon>
       <h4 md-line>
         <a class='link' [href]='item.url'>{{ item.full_name }}</a>

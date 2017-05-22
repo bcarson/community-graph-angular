@@ -1,3 +1,9 @@
+/*
+* Filter Pipe
+* Currently specific to language
+* (this pipe is only used in one place)
+* Return item if item.language matches args
+*/
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({

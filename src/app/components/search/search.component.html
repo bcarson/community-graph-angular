@@ -1,16 +1,20 @@
 <form class="search-form" container='containerX'>
   <md-input-container fxLayout='row'>
-    <input mdInput placeholder="Search">
+    <input mdInput 
+      [(ngModel)]="search" 
+      name="search" 
+      placeholder="Search"
+      (keyup)="runSearch()"
+    >
   </md-input-container>
-
   <md-chip-list fxLayout='row' fxLayoutAlign='space-around stretch'>
     Languages:
     <md-chip *ngFor="let language of languages"
         class='chip'
-        selected="false"
+        [class.active]='language.name === selectedLanguage'
         color="secondary"
-        (click)='selectLanguage($event, language.name)'>
-      {{ language.name }} ({{ language.count }}) {{ language.selected }} 
+        (click)='selectLanguage(language.name)'>
+      {{ language.name }} ({{ language.count }})
     </md-chip>
   </md-chip-list>
 </form>

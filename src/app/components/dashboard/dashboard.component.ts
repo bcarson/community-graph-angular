@@ -2,13 +2,13 @@ import { Component, OnInit, Output } from '@angular/core';
 import { GqlService } from '../../services/services';
 import { Observable } from 'rxjs/observable';
 import { ResultsListComponent, SearchComponent } from '../../components/components';
-import { FilterPipe, OrderByPipe } from '../../shared/shared';
+import { FilterPipe, OrderByPipe, SubstringPipe } from '../../shared/shared';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [ FilterPipe, OrderByPipe ]
+  providers: [ FilterPipe, OrderByPipe, SubstringPipe ]
 })
 export class DashboardComponent implements OnInit {
   loading: boolean = true;
@@ -16,6 +16,8 @@ export class DashboardComponent implements OnInit {
   languageFilter: Array<Object>;
   languages: any;
   filters: any;
+  filteredRepos: any;
+  selectedLanguage: any;
 
   constructor(
     private gqlService: GqlService, 
@@ -32,13 +34,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  updateFilter(language){
-    console.log('Back in the parent: ',language);
+  updateLanguage(language){
     this.filters = {
       'language': language
     }
-    // this.repositories = this.filterPipe.transform(this.repositories, language);
-    
+    this.selectedLanguage = language;
+  }
+
+  updateString(search){
+    this.filters = { 'search': search }
   }
 
   createFilters(){
@@ -64,8 +68,7 @@ export class DashboardComponent implements OnInit {
     this.languageFilter = this.orderByPipe.transform(Array.from(this.languages, ([key, val]) => {
       return {
         'name': key,
-        'count': val,
-        'selected': false
+        'count': val
       }
     }), 'count');
   }

@@ -7,20 +7,20 @@ import { Component, EventEmitter, Input, OnInit, Output, Pipe } from '@angular/c
 })
 export class SearchComponent implements OnInit {
   @Input() languages;
-  @Output() selected: EventEmitter<String> = new EventEmitter<String>();
+  @Input() selectedLanguage;
+  search: string;
+  @Output() searchString = new EventEmitter<String>()
+  @Output() language = new EventEmitter<String>();
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.languages);
+  ngOnInit() { }
+
+  selectLanguage(name){
+    this.language.emit(name);
   }
 
-  selectLanguage($event, name){
-    console.log(name);
-    if(this.languages[name]){
-      //this.languages[name].selected = true;
-    }
-    this.selected.emit(name);
+  runSearch(){
+    this.searchString.emit(this.search);
   }
-
 }

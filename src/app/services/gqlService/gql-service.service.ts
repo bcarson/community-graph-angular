@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 const RepositoryQuery = gql`
   {
-    Repository(orderBy: [updated_desc], first: 200) {
+    Repository(orderBy: [updated_desc], first: 1000) {
       url
       created
       favorites

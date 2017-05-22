@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { GqlServiceService } from './gql-service.service';
+import { GqlService } from './gql-service.service';
 
 describe('GqlServiceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GqlServiceService]
+      providers: [GqlService]
     });
   });
 
-  it('should be created', inject([GqlServiceService], (service: GqlServiceService) => {
+  it('should be created', inject([GqlService], (service: GqlService) => {
     expect(service).toBeTruthy();
   }));
 });
