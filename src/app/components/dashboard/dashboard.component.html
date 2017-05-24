@@ -1,12 +1,36 @@
 <div *ngIf='loading'>
   <md-progress-spinner></md-progress-spinner>
 </div>
+
 <div *ngIf='!loading'>
+  <!-- 
+    Search Component displays available languages 
+    defined and passed in from dashboard component.
+    Search will also emit events when user input is
+    detected, which we listen for in the dashboard.
+    (see updateLanguage and updateString in 
+    dashboard.component.ts)
+  -->
   <search 
-    [languages]='languageFilter' 
+    [languages]='languageFilter'
     [selectedLanguage]='selectedLanguage'
     (language)='updateLanguage($event)'
     (searchString)='updateString($event)'
   ></search>
-  <results-list [list]='repositories' [filters]='filters'></results-list>
+
+  <!-- 
+    Results List component displays the results
+    of our query and listens for changes from the
+    dashboard. It does not communicate with the 
+    Search Component, it only watches the 
+    selectedLanguage and searchString passed in from
+    the Dashboard Component. See 'ngOnChanges' in 
+    results-list.component.ts for what happens when
+    these values are updated.
+  -->
+  <results-list 
+    [list]='repositories' 
+    [selectedLanguage]='selectedLanguage' 
+    [searchString]='searchString'
+  ></results-list>
 </div>

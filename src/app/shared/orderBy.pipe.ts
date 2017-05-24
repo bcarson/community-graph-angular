@@ -1,3 +1,7 @@
+/*
+*   OrderBy Pipe
+*   Sorts an array of objects by selected param
+*/
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({

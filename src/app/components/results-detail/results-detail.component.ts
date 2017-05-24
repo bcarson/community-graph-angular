@@ -1,3 +1,7 @@
+/*
+*   Nothing to see here folks - so far this component
+*   is a placeholder and doesn't do anything (yet!)
+*/
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({

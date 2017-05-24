@@ -1,15 +1,30 @@
 <div>
+  <!-- 
+    Note all '<md-' tags are coming from Angular Material. 
+    Learn more about these here: https://material.angular.io/
+  -->
   <md-list>
   <h3 md-subheader>Repositories</h3>
-    <md-list-item *ngIf='filters?.language'>Filtered by Language: {{ filters.language }}</md-list-item>
-    <md-list-item *ngIf='filters?.search'>Filtered by String: {{ filters.search }}</md-list-item>
+    
+    <!-- *ngIf will only show 'Filtered by' here if the value indicated is not null -->
+    <md-list-item *ngIf='selectedLanguage'>Filtered by Language: {{ selectedLanguage }}</md-list-item>
+    <md-list-item *ngIf='searchString'>Filtered by String: {{ searchString }}</md-list-item>
+    
+    <!-- 
+        *ngFor will loop through each item in filteredList 
+        which is defined in the .ts file. The <md-list-item>
+        tag seen below will be repeated for each item in the list.
+        Curly brackets seen here will be replaced with actual 
+        properties when the page renders.
+        Note square brackets here (i.e. [href]) indicate to 
+        Angular that this property is using a variable.
+    -->
     <md-list-item *ngFor="let item of filteredList">
       <md-icon md-list-icon>folder</md-icon>
       <h4 md-line>
         <a class='link' [href]='item.url'>{{ item.full_name }}</a>
       </h4>
       {{ item.language }}
-
     </md-list-item>
   </md-list>
 </div>

@@ -1,0 +1,165 @@
+interface Content {
+   id: ID!
+   title: String
+   created: Int
+   tags: [Tag] @relation(name:"TAGGED")
+}
+
+type Link {
+    url: ID!
+    referrer: [Content] @relation(name:"LINKED", direction:"IN")
+    score(daysAgo: Int = 7): Int @cypher(statement:"WITH {this} AS link MATCH (link)<--(t:Tweet:Content) WHERE not(t:Retweet) AND coalesce(toInteger(t.created),0) > (timestamp()/1000 - 7 * 24 * 60 * 60) WITH collect(t) as tweets RETURN REDUCE(acc = 0, tweet IN tweets | acc + tweet.favorites + size((tweet)<-[:RETWEETED]-())) AS score")
+}
+
+type Tag {
+    name: ID!
+    tagged: [Content] @relation(name:"TAGGED", direction:"IN")
+    related: [Tag] @cypher(statement:"WITH {this} as this MATCH (this)<-[:TAGGED]-(:Content)-[:TAGGED]->(tag) WITH tag, count(*) as freq ORDER BY freq DESC LIMIT 10 RETURN tag")
+}
+
+type Tweet implements Content {
+    id: ID!
+    title: String
+    text: String
+    created: Int
+    favorites: Int
+    reply: Tweet @relation(name:"REPLIED_TO")
+    retweeted: Tweet @relation(name:"RETWEETED")
+    postedBy: User @relation(name:"POSTED", direction:"IN")
+    mentioned: [User] @relation(name:"MENTIONED")
+    tags: [Tag] @relation(name:"TAGGED")
+    links: [Link] @relation(name:"LINKED")
+}
+
+type User {
+    id: ID!
+    type: String
+    repositories: [Repository] @relation(name:"CREATED")
+
+    questions: [Question] @relation(name:"POSTED")
+    answers: [Answer] @relation(name:"POSTED")
+    reputation: Int
+    
+    screen_name: String!
+    name: String
+    location: String
+    followers: Int
+    following: Int
+    statuses: Int
+    profile_image_url: String
+    posted: [Tweet] @relation(name:"POSTED")
+    tagged: [Tag] @relation(name:"TAGGED")
+}
+
+type Repository implements Content {
+    id: ID!
+    title: String!
+    full_name: String
+    url: String
+    created: Int
+    homepage: String
+    favorites: Int
+    updated: Int
+    pushed: Int
+    size: Int
+    score: Float
+    watchers: Int
+    language: String
+    forks: Int
+    open_issues: Int
+    branch: String
+    description: String
+    owner: User @relation(name:"CREATED", direction: "IN")
+    tags: [Tag] @relation(name:"TAGGED")
+}
+
+type Question implements Content {
+    id: ID!
+    title: String
+    link: String
+    score: Int
+    text: String
+
+    closed_date: Int
+    closed_reason: String
+
+    comment_count: Int 
+    favorites: Int
+    view_count: Int
+    comment_count: Int
+    is_answered: Boolean 
+    created: Int
+    updated: Int
+    answers: [Answer] @relation(name:"ANSWERED", direction:"IN")
+    author: User @relation(name:"POSTED", direction:"IN")
+    tags: [Tag] @relation(name:"TAGGED")
+}
+
+type Answer implements Content {
+    id: ID!
+    title: String @cypher(statement:"WITH {this} as this MATCH (this)-[:ANSWERED]->(q) RETURN q.title")
+    text: String 
+    comment_count: Int
+    is_accepted: Boolean
+    created: Int
+    score: Int
+    question: Question @relation(name:"ANSWERED")
+    author: User @relation(name:"POSTED", direction:"IN")
+    tags: [Tag] @relation(name:"TAGGED")
+}
+
+type Group implements Content {
+   id: ID!
+   title: String!
+   created: Int
+   tags: [Tag] @relation(name:"TAGGED")
+   country: String
+   city: String
+   latitude: Float
+   longitude: Float
+   link: String
+   text: String
+   memberCount: Int @cypher(statement:"RETURN ({this}).members")
+   score: Float @cypher(statement:"RETURN ({this}).rating")
+   members: [User] @relation(name:"JOINED",direction:"IN")
+   key: String
+   events: [Event] @relation(name:"CONTAINED")
+   owners: [User] @relation(name:"CREATED", direction:"IN")
+}
+
+type Event implements Content {
+   id: ID!
+   title: String!
+   created: Int
+   tags: [Tag] @relation(name:"TAGGED")
+
+   past: Boolean @cypher(statement:"WITH {this} as event RETURN event:Past")
+   status: String
+   rsvp_limit: Int
+   yes_rsvp_count: Int
+   maybe_rsvp_count : Int
+   score: Float @cypher(statement:"return {this).ratings")
+   headcount: Int,
+   text: String,
+   link: String,
+   utc_offset: Int
+   time: Int
+   updated: Int
+   waitlist_count: Int
+   attendees: [User] @relation(name:"ATTENDED",direction:"IN")
+   owner: [User] @relation(name:"CREATED",direction:"IN")
+   venue: [Venue] @relation(name:"HOSTED",direction:"IN")
+   group: Group @relation(name:"CONTAINED",direction:"IN")
+}
+
+type Venue {
+   id:ID!
+   name:String
+   address: String
+   city:String
+   country:String
+   country_name:String
+   latitude: Float
+   longitude:Float
+   events: [Event] @relation(name:"HOSTED")
+}
